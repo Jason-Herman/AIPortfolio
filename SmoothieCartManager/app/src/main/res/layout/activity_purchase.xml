@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="jasonherman.com.smoothieui.ScanItems">
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Small"
+        android:id="@+id/btnSmall"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="addSmall"
+        />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Large"
+        android:id="@+id/btnLarge"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:onClick="addLarge"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Process"
+        android:id="@+id/btnProcess"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:onClick="process"
+        android:layout_margin="5dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/btnCancel"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="cancel"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Items"
+        android:id="@+id/textView48"
+        android:layout_below="@id/btnSmall"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Smoothie (Quantity: 0): $0.00"
+        android:id="@+id/tvSmall"
+        android:layout_below="@id/textView48"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Large Smoothie (Quantity: 0): $0.00"
+        android:id="@+id/tvLarge"
+        android:layout_below="@+id/tvSmall"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Subtotal: $0.00"
+        android:id="@+id/tvSubtotal"
+        android:layout_below="@+id/tvLarge"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Discounts:"
+        android:id="@+id/textView25"
+        android:textStyle="bold|italic"
+        android:layout_below="@+id/tvSubtotal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Available Credit: $0.00"
+        android:id="@+id/tvAvCredit"
+        android:layout_below="@+id/textView25"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Gold Discount: $0.00"
+        android:id="@+id/tvGoldDiscount"
+        android:layout_below="@+id/tvAvCredit"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Used Credit: $0.00"
+        android:id="@+id/tvCredit"
+        android:layout_below="@+id/tvGoldDiscount"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="TOTAL DUE: $0.00"
+        android:id="@+id/tvTotalDue"
+        android:textStyle="bold"
+        android:layout_below="@+id/tvCredit"
+        android:layout_alignRight="@+id/tvSubtotal"
+        android:layout_alignEnd="@+id/tvSubtotal" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Payment Method: None (Swipe credit card)"
+        android:id="@+id/tvCreditCard"
+        android:textStyle="bold"
+        android:layout_above="@+id/btnProcess"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Swipe Credit Card"
+        android:id="@+id/btnSwipe"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_above="@+id/tvCreditCard"
+        android:layout_alignParentStart="true"
+        android:onClick="swipe"/>
+
+
+</RelativeLayout>

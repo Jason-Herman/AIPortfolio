@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="6dip" >
+
+    <TextView
+        android:id="@+id/display_transaction_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:text="TextView"
+        android:layout_alignTop="@+id/display_transaction_prediscount_amount"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/display_transaction_prediscount_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:text="TextView"
+        android:layout_alignTop="@+id/display_transaction_credits_applied"
+        android:layout_toStartOf="@+id/display_transaction_credits_applied" />
+
+    <TextView
+        android:id="@+id/display_transaction_credits_applied"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:text="TextView"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/display_transaction_gold_status" />
+
+    <TextView
+        android:id="@+id/display_transaction_gold_status"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".25"
+        android:text="TextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+</LinearLayout>

@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="jasonherman.com.smoothieui.EditCustomer">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Leave fields blank to prevent changes."
+        android:id="@+id/textView32"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Name: Jason Herman"
+        android:id="@+id/tvName"
+        android:layout_below="@+id/textView32"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="New Name:"
+        android:id="@+id/tvNewName"
+        android:layout_margin="10dp"
+        android:layout_below="@id/tvName"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etName"
+        android:layout_alignBaseline="@id/tvNewName"
+        android:layout_toRightOf="@+id/tvNewName"
+        android:layout_toEndOf="@+id/tvNewName"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Email: hermanjason@live.com"
+        android:id="@+id/tvEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="italic"
+        android:layout_below="@+id/tvNewName" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="New Email:"
+        android:id="@+id/tvNewEmail"
+        android:layout_below="@+id/tvEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/etEmail"
+        android:layout_alignBaseline="@id/tvNewEmail"
+        android:layout_toRightOf="@+id/tvNewEmail"
+        android:layout_toEndOf="@+id/tvNewEmail"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Billing Address: 60 Arabian Rd, Alpharetta, GA, 30044"
+        android:id="@+id/tvAddress"
+        android:layout_below="@+id/tvNewEmail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="New Billing Address:"
+        android:id="@+id/tvNewAddress"
+        android:layout_below="@+id/tvAddress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/etAddress"
+        android:layout_alignBaseline="@id/tvNewAddress"
+        android:layout_toRightOf="@+id/tvNewAddress"
+        android:layout_toEndOf="@+id/tvNewAddress"
+        android:layout_alignParentEnd="true" />
+
+
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update"
+        android:id="@+id/btnUpdate"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/etAddress"
+        android:layout_alignEnd="@+id/etAddress"
+        android:onClick="update"/>
+
+</RelativeLayout>
+
