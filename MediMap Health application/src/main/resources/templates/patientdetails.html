@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <link href="../static/css/medimap.css" th:href="'../../css/medimap.css'" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../static/bootstrap/bootstrap/css/bootstrap.min.css" th:href="'../../bootstrap/bootstrap/css/bootstrap.min.css'" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/nouislider.min.css" th:href="'../../css/nouislider.min.css'" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/nouislider.pips.css" th:href="'../../css/nouislider.pips.css'" rel="stylesheet" type="text/css"/>
+    <link href="../static/css/nouislider.tooltips.css" th:href="'../../css/nouislider.tooltips.css'" rel="stylesheet" type="text/css"/>
+    <script src="../static/js/jquery-1.12.1.min.js" th:src="'../../js/jquery-1.12.1.min.js'"></script>
+    <script src="../static/bootstrap/bootstrap/js/bootstrap.min.js" th:src="'../../bootstrap/bootstrap/js/bootstrap.min.js'"></script>
+    <script src="../static/bootstrap/angular.min.js" th:src="'../../bootstrap/angular.min.js'"></script>
+    <script src="../static/bootstrap/angular-animate.min.js" th:src="'../../bootstrap/angular-animate.min.js'"></script>
+    <script src="../static/bootstrap/ui-bootstrap-tpls-1.2.4.min.js" th:src="'../../bootstrap/ui-bootstrap-tpls-1.2.4.min.js'"></script>
+    <script src="../static/js/nouislider.min.js" th:src="'../../js/nouislider.min.js'"></script>
+    <script src="../static/js/moment.min.js" th:src="'../../js/moment.min.js'"></script>
+    <script src="../static/js/homepage.js" th:src="'../../js/homepage.js'"></script>
+    <script src="../static/js/patientdetail.js" th:src="'../../js/patientdetail.js'"></script>
+
+
+    <title>Patient Details</title>
+</head>
+
+
+<style>
+
+    #patient_pii .imgContainer { float:left; width:100px; height:150px; }
+    #patient_pii .textContainer { float:left; width:240px; height:100px; overflow:hidden }
+     #customers {
+         font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+         border-collapse: collapse;
+         width: 100%;
+         margin-left: 10px;
+     }
+
+    #customers td, #customers th {
+        border: 1px solid white;
+        text-align: left;
+        padding: 8px;
+        padding-bottom: 1em;
+    }
+
+    #customers tr:nth-child(even){background-color: whitesmoke}
+
+    #customers tr:hover {background-color: #ddd;}
+
+    #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        background-color: white ;
+        color: cornflowerblue;
+        text-decoration-line: underline;
+    }
+    #main_info {
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#b2e1ff+0,66b6fc+100;Blue+3D+%236 */
+        border-style: outset;
+        width:450px;
+        height:600px;
+        float:left;
+
+    }
+</style>
+
+<body>
+
+
+    <div class="row head-search-bar">
+
+        <div class="col-lg-offset-2 col-xs-4">
+
+            <input type="text" class="form-control" id="searchbar" placeholder="Search for Patient"/>
+        </div>
+        <div class="col-lg-1">
+            <button id="search-btn" type="submit" class="btn btn-default">Search</button>
+        </div>
+    </div>
+
+    <div id="sidebar">
+        <div style="width: 35%; float:left">
+        <div class="col-sm">
+            <div class="col-sm-offset-2">
+                <input id="global-hidden-patient-id" type="hidden" th:value="${patient.patientId}">
+                <div id="patient_pii">
+                    <div class="imgContainer"><img src="../static/img/profile_male.png" th:src="'../../img/profile_male.png'" class="img-thumbnail" width="128" height="128">
+                    </div>
+                    <div class="textContainer">
+
+                            <p th:text="${patient.patientFname + ' ' + patient.patientLname}"></p>
+                            <p th:if="${patient.gender != null}" th:text="${patient.gender}"></p>
+                            <p th:if="${patient.birthDt != null}" th:text="'DOB: ' + ${patient.birthDt}"></p>
+                    </div>
+                    <button id="edit-patient-details" type="button" class="btn btn-primary">Edit Patient</button>
+            </div>
+        </div>
+
+        <table id="customers">
+            <tr>
+                <th>Measurements</th>
+            </tr>
+            <tr>
+                <td>
+                    <div th:if="${measurements != null}">
+                        <div th:each="observation,y : ${measurements}" th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" style="padding-bottom:10px;">
+
+                            <div th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" th:each="component,iterStat : ${observation.components}">
+                                <p th:if="${iterStat.index == 0}" th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" th:text="'Observation by ' + ${observation.performerName} + ' on ' + ${observation.effectiveDateDisplay} + ' '"></p>
+                                <p  th:if="${component.system != null}" th:text="${component.display} + ' ' + ${component.value} + ' ' + ${component.unit}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Risk Factors</th>
+            </tr>
+            <tr>
+                <td>
+                    <div th:if="${riskfactors != null}">
+                        <div th:each="observation,y : ${riskfactors}" th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" style="padding-bottom:10px;">
+
+                            <div th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" th:each="component,iterStat : ${observation.components}">
+                                <p th:if="${iterStat.index == 0}" th:class="'observationdisplay ' + ${observation.effectiveDate.replaceAll('/', '-')}" th:text="'Observation by ' + ${observation.performerName} + ' on ' + ${observation.effectiveDateDisplay} + ' '"></p>
+                                <p  th:if="${component.system != null}" th:text="${component.display} + ' ' + ${component.value} + ' ' + ${component.unit}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Immunizations</th>
+            </tr>
+            <tr>
+                <td>
+                    <div th:if="${immunizations != null}">
+                        <div th:each="immunization,y : ${immunizations}"  style="padding-bottom:10px;">
+                                <p  th:text="${immunization.immunizationName} + ' ' + ${immunization.immunizationDate} + ' by Dr. Jessica Towns'"></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Social History</th>
+            </tr>
+            <tr>
+                <td>
+                    <div th:if="${socialhistory != null}">
+                        <p  th:text="'Father'"></p>
+                        <div th:each="social,y : ${socialhistory}"  style="padding-bottom:10px;">
+                            <p  th:text="${social.socialHistoryRisk}"></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Allergies</th>
+            </tr>
+            <tr>
+                <td>
+                    <div th:if="${allergies != null}">
+                        <div th:each="allergy,y : ${allergies}"  style="padding-bottom:10px;">
+                            <p  th:text="${allergy.allergy} + ' Severity: ' + ${allergy.severity}"></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+         </table>
+
+        </div>
+    </div>
+
+
+
+    <div id="Main">
+        <div style="width: 65%; float:right">
+
+            <div id="main_info">
+                <table>
+
+                    <tr>  <th width='50%' height="40px" th:text="'Date:' + ${patient.patientFname}"></th>
+                            <th width='50%' height="40px" th:text="'Physician:' + ${patient.patientFname}"></th>
+                    </tr>
+
+
+                    <tr> <th th:text="'Condition:'"> </th></tr>
+                    <tr> <th height="20px" th:text="${patient.patientFname}"></th></tr>
+                    <tr> <th height="40px" th:text="'Edit'"></th></tr>
+
+                    <tr> <th height="40px" th:text="'Symptoms:'"></th></tr>
+                    <tr> <th height="20px" th:text="${patient.patientFname}"></th></tr>
+                    <tr> <th height="40px" th:text="'Edit'"></th></tr>
+
+                    <tr> <th height="40px" th:text="'Lab Results:'"></th></tr>
+                    <tr> <th height="20px" th:text="${patient.patientFname}"></th></tr>
+                    <tr> <th height="40px" th:text="'Request new Lab'"></th></tr>
+
+                    <tr> <th height="40px" th:text="'Medications:'"></th></tr>
+                    <tr> <th height="20px" th:text="${patient.patientFname}"></th></tr>
+                    <tr> <th height="40px" th:text="'Edit'"></th></tr>
+
+                    <tr> <th height="40px" th:text="'Care Plan:'"></th></tr>
+                    <tr> <th height="20px" th:text="${patient.patientFname}"></th></tr>
+                    <tr> <th height="40px" th:text="'Edit'"></th></tr>
+
+                </table>
+
+            </div>
+        <div class="col-lg-offset-8" style="padding-right:35px;">
+           <!-- <div class="center-loading-container">
+                <div id="loading-img" class="center-loading">
+                    <span>Loading</span>
+                    <img src="../static/img/squares.gif" th:src="'../../img/squares.gif'">
+                </div>
+            </div> -->
+            <div id="body_img">
+                <div id="bodyChart" ></div>
+            </div>
+            <div>
+                <ul class="list-unstyled" id="datelist-sorted">
+                    <li class="date-selector" ></li>
+                </ul>
+                <div id="slider"></div>
+                <div id="slider-output"></div>
+                <button id="add-condition-btn" type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">Add Condition</button>
+                <button id="move-condition-btn" type="button" class="btn btn-default"  >Move Condition</button>
+
+            </div>
+        </div>
+            <div class="col-lg-offset-8" style="padding-right:35px;">
+                <div id="alert-move-box" class="alert alert-info" role="alert">
+                    Select a condition to move.
+                </div>
+            </div>
+            <!-- <button type="button" id="conditionAppend" class="btn btn-primary" ng-model="singleModel">New Conditions</button> -->
+        </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="newConditionModal" tabindex="-1" role="dialog" aria-labelledby="newConditionModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="modal-close-x" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="newConditionModalLabel">New Condition</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input id="hidden-patient-id" type="hidden" th:value="${patient.patientId}">
+                        <input id="hidden-condition-id" type="hidden" >
+                        <input type="hidden" id="coordxval">
+                        <input type="hidden" id="coordyval">
+                    </div>
+                    <div class="form-group">
+                        <label for="condition-field" class="control-label">Condition:</label>
+                        <input type="text" class="form-control" name="condition-field" id="condition-field">
+                    </div>
+                    <div class="form-group">
+                        <label for="condition-field-details" class="control-label">Condition Details:</label>
+                        <textarea class="form-control" name="condition-field-details" id="condition-field-details"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="clinical-status" class="control-label">Condition Status:</label>
+                                <select name="clinical-status" id="clinical-status" class="form-control">
+                                    <option value="provisional">Provisional</option>
+                                    <option value="unknown">Unknown</option>
+                                    <option value="confirmed">Confirmed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="clinical-serverity" class="control-label">Severity:</label>
+                                <select name="clinical-serverity" id="clinical-serverity" class="form-control">
+                                    <option value="1">Ill</option>
+                                    <option value="2">Sick</option>
+                                    <option value="3">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="recorddate" class="control-label">Date Recorded:</label>
+                                <input class="form-control" type="datetime-local" name="recorddate" id="recorddate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="onsetdate" class="control-label">Onset Date:</label>
+                                <input class="form-control" type="datetime-local" name="onsetdate" id="onsetdate">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="submit-condition" type="button" class="btn btn-primary">Add Condition</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="updateConditionModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Update Condition</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="hidden-update-patient-id" type="hidden">
+                        <input id="hidden-update-condition-id" type="hidden" >
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDisplayConditionName" class="control-label">Condition:</label>
+                        <input type="text" class="form-control" name="updateDisplayConditionName" id="updateDisplayConditionName">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateDisplayConditionDescription" class="control-label">Condition Details:</label>
+                        <textarea class="form-control" name="updateDisplayConditionDescription" id="updateDisplayConditionDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="clinical-update-status" class="control-label">Condition Status:</label>
+                                <select name="clinical-update-status" id="clinical-update-status" class="form-control">
+                                    <option value="provisional">Provisional</option>
+                                    <option value="unknown">Unknown</option>
+                                    <option value="confirmed">Confirmed</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="clinical-update-serverity" class="control-label">Severity:</label>
+                                <select name="clinical-update-serverity" id="clinical-update-serverity" class="form-control">
+                                    <option value="1">Ill</option>
+                                    <option value="2">Sick</option>
+                                    <option value="3">Critical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="update-recorddate" class="control-label">Date Recorded:</label>
+                                <input class="form-control" type="datetime-local" name="update-recorddate" id="update-recorddate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="update-onsetdate" class="control-label">Onset Date:</label>
+                                <input class="form-control" type="datetime-local" name="update-onsetdate" id="update-onsetdate">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="updateDisplayConditionAll"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="save-condition-changes" type="button" class="btn btn-primary">Save changes</button>
+                    <button id="delete-condition-changes" type="button" class="btn btn-primary">Delete Condition</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="updatePatientModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Update Patient</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="updateDisplayPatientFirstName" class="control-label">First Name:</label>
+                                <input type="text" class="form-control" name="updateDisplayPatientFirstName" id="updateDisplayPatientFirstName">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="updateDisplayPatientMiddleName" class="control-label">Middle Name:</label>
+                                <input type="text" class="form-control" name="updateDisplayPatientMiddleName" id="updateDisplayPatientMiddleName">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="updateDisplayPatientLastName" class="control-label">Last Name:</label>
+                                <input type="text" class="form-control" name="updateDisplayPatientLastName" id="updateDisplayPatientLastName">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="updateDisplayPatientTitleName" class="control-label">Suffix:</label>
+                                <input type="text" class="form-control" name="updateDisplayPatientTitleName" id="updateDisplayPatientTitleName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="patient-clinical-gender" class="control-label">Gender:</label>
+                                <select name="patient-clinical-gender" id="patient-clinical-gender" class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="unknown">Unknown</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="update-dob" class="control-label">Date of Birth:</label>
+                                <input class="form-control" type="date" name="update-dob" id="update-dob">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <label for="update-addr-line1" class="control-label">Address Line 1:</label>
+                                <input class="form-control" type="text" name="update-addr-line1" id="update-addr-line1">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="update-addr-line2" class="control-label">Address Line 2:</label>
+                                <input class="form-control" type="text" name="update-addr-line2" id="update-addr-line2">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="update-addr-city" class="control-label">City:</label>
+                                <input class="form-control" type="text" name="update-addr-city" id="update-addr-city">
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="update-addr-state" class="control-label">State:</label>
+                                <input class="form-control" type="text" name="update-addr-state" id="update-addr-state" maxlength="2" >
+                            </div>
+                            <div class="col-lg-2">
+                                <label for="update-addr-zip" class="control-label">Zip Code:</label>
+                                <input class="form-control" type="text" name="update-addr-zip" id="update-addr-zip">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="update-phone" class="control-label">Phone:</label>
+                                <input class="form-control" type="tel" name="update-phone" id="update-phone">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="update-email" class="control-label">Email:</label>
+                                <input class="form-control" type="email" name="update-email" id="update-email">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div id="updateDisplayPatientAll"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button id="save-patient-changes" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-modal" class="modal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-offset-2 col-lg-10">
+                            <div id="loading-img" class="center-loading">
+                                <span>Loading</span>
+                                <img src="../static/img/squares.gif" th:src="'../../img/squares.gif'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

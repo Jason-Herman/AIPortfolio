@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="../static/css/medimap.css" th:href="'../../css/medimap.css'" rel="stylesheet" type="text/css" media="screen"/>
+    <link href="../static/bootstrap/bootstrap/css/bootstrap.min.css" th:href="'../../bootstrap/bootstrap/css/bootstrap.min.css'" rel="stylesheet" type="text/css"/>
+    <script src="../static/bootstrap/angular.min.js" th:src="'../../bootstrap/angular.min.js'"></script>
+    <script src="../static/bootstrap/angular-animate.min.js" th:src="'../../bootstrap/angular-animate.min.js'"></script>
+    <script src="../static/bootstrap/ui-bootstrap-tpls-1.2.4.min.js" th:src="'../../bootstrap/ui-bootstrap-tpls-1.2.4.min.js'"></script>
+    <title>Error Page</title>
+</head>
+<body>
+
+    <!-- /#sidebar-wrapper -->
+    <div class="row head-search-bar">
+
+        <div class="col-lg-offset-2 col-xs-4">
+            <input type="text" class="form-control" id="searchbar" placeholder="Search for Patient"/>
+        </div>
+        <div class="col-lg-1">
+            <button id="search-btn" type="submit" class="btn btn-default">Search</button>
+        </div>
+    </div>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Error</h1>
+                    <p>Please go back to <a href="../templates/homepage.html" th:href="'/'">Home</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
