@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERMS: Team 70</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="js/libs/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    <script src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+    <script src="js/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/utils.js"></script>
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+
+            if(sessionStorage.length>0) {
+                var user = $.parseJSON(sessionStorage.user);
+                //console.log(user);
+                if (user != 'undefined') {
+                    homePage();
+                }
+            }
+
+            $('#loginForm').submit(function (e) {
+                e.preventDefault();
+
+                var $this = $(this);
+                var formData = $this.serializeArray();
+                var jsonData = {};
+
+                //gets forms elements by name and created json as {name:value}
+                $.map(formData, function (n, i) {
+                    n['value'] = (n['value'] == 'on' ? true : n['value']);
+                    jsonData[n['name']] = n['value'];
+                });
+
+                var stringData = JSON.stringify(jsonData);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'server/login.php',
+                    data: stringData,
+                    dataType: 'json',
+                    complete: function (response) {
+                        var data = $.parseJSON(response.responseText);
+                        if (data.hasOwnProperty('error')) {
+                            $('#divError').show();
+                            $('#divError').html(data.error);
+                        }
+                        else {
+                            $('#divError').hide();
+                            //top.user =data;
+                            sessionStorage['user'] = response.responseText;
+                            homePage();
+                        }
+                    },
+                    error: function (xhr) {
+                        $('#divError').show();
+                        $('#divError').html(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+    </script>
+</head>
+<body>
+<form id="loginForm">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input class="form-control" name="username" id="username" placeholder="Username" required >
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password" required >
+    </div>
+
+
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+<div id="divError" class="alert alert-danger"></div>
+</body>
+</html>

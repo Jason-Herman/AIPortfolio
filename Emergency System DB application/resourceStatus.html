@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERMS: Resource Status</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="js/libs/bootstrap/css/bootstrap.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+
+    <script src="js/libs/jquery/jquery-1.11.2.min.js"></script>
+    <script src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+    <script src="js/libs/jquery/jquery-ui.min.js"></script>
+    <script src="js/libs/bootstrap/js/moment.min.js"></script>
+    <script src="js/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/libs/bootstrap/js/bootstrap-datepicker.min.js"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/resourceStatus.js"></script>
+
+    <script type="text/javascript">
+        /////////////////////////////////////////////////////////////
+
+        //  All Javascript functions are in js/resourceStatus.js
+
+        /////////////////////////////////////////////////////////////
+        var user = $.parseJSON(sessionStorage.user);//using browser session storage to store user info
+
+        //actions that needs to be done after page loaded
+        $(document).ready(function () {
+            setUserInto(); //js.utils.js
+
+            var jsonData = {};
+            jsonData["action"] = "getResourceStatus";
+            jsonData["username"] = user.Username;
+
+            var stringData = JSON.stringify(jsonData);
+
+            $.ajax({
+                type: 'POST',
+                url: 'server/resourceStatus.php',
+                data: stringData,
+                dataType: 'json',
+                complete: function (response) {
+                    var data = $.parseJSON(response.responseText);
+                    if (data.hasOwnProperty('error')) {
+                        //   $('#divError').show();
+                        //    console.log(data.error);
+                    }
+                    //success display record
+                    else {
+
+                        if (data.hasOwnProperty('resourcesInUse')) {
+                            var resourcesInUse = data.resourcesInUse;
+                            displayResourceInUse(resourcesInUse);
+                        }
+                        if (data.hasOwnProperty('resourcesRequestedByMe')) {
+                            var resourcesRequestedByMe = data.resourcesRequestedByMe;
+                            displayResourcesRequestedByMe(resourcesRequestedByMe);
+                        }
+                        if (data.hasOwnProperty('resourcesInRepair')) {
+                            var resourcesInRepair = data.resourcesInRepair;
+                            displayResourcesInRepair(resourcesInRepair);
+                        }
+                        if (data.hasOwnProperty('resourcesReceivedByMe')) {
+                            var resourcesReceivedByMe = data.resourcesReceivedByMe;
+                            displayResourceReceivedByMe(resourcesReceivedByMe);
+                        }
+                    }
+                },
+                //if server script was not reached
+                error: function (xhr) {
+                    //  $('#divError').show();
+                    // console.log(xhr.responseText);
+
+                }
+            });
+
+        })
+    </script>
+
+
+</head>
+<body>
+
+<div id="menuWrapper">
+    <div class="row">
+        <h4 id="userName" class="col-md-5"></h4><h4 id="userTypeName" class="col-md-5"></h4>
+    </div>
+    <div class="row" id="userDetailGroup">
+        <label for="userDetails" id="userDetailsLabel" class="control-label  col-md-2"></label>
+        <div id="userDetails" class="col-md-2 offset-md-2"></div>
+    </div>
+    <ul class="nav nav-tabs">
+        <li role="presentation"><a href="addResource.html">Add Resource</a></li>
+        <li role="presentation"><a href="addIncident.html">Add Emergency Incident</a></li>
+        <li role="presentation"><a href="search.html">Search Resource</a></li>
+        <li role="presentation" class="active"><a href="resourceStatus.html">Resource Status</a></li>
+        <li role="presentation"><a href="report.html">Resource Report</a></li>
+        <li role="presentation"><a href="javascript:exit()">Exit</a></li>
+    </ul>
+</div>
+
+
+<div id="contentWrapperResourceStatus">
+    <div id="resourcesInUseWrapper">
+        <h4 class="blue">Resources in Use</h4>
+        <div id="resourcesInUse"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="resourcesRequestedByMeWrapper">
+        <h4 class="blue">Resources Requested By Me</h4>
+        <div id="resourcesRequestedByMe"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="resourcesReceivedByMeWrapper">
+        <h4 class="blue">Resource Requests Received By Me</h4>
+        <div id="resourcesReceivedByMe"></div>
+    </div>
+    <div class="clear"></div>
+    <div id="resourcesInRepairWrapper">
+        <h4 class="blue">Repairs Scheduled/In-progress</h4>
+        <div id="resourcesInRepair"></div>
+    </div>
+
+</div>
+</body>
+</html>

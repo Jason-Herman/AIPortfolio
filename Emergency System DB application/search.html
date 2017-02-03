@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ERMS: Search Resources</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="js/libs/bootstrap/css/bootstrap.min.css"/>
+
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<link rel="stylesheet" href="js/libs/bootstrap/css/bootstrap-datepicker.min.css"/>
+
+<script src="js/libs/jquery/jquery-1.11.2.min.js"></script>
+<script src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+<script src="js/libs/jquery/jquery-ui.min.js"></script>
+<script src="js/libs/bootstrap/js/moment.min.js"></script>
+<script src="js/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="js/libs/bootstrap/js/bootstrap-datepicker.min.js"></script>
+
+<script src="js/utils.js"></script>
+<script src="js/search.js"></script>
+</head>
+
+<body>
+<div id="content">
+    <div id="menuWrapper">
+        <div class="row">
+            <h4 id="userName" class="col-md-5"></h4><h4 id="userTypeName" class="col-md-5"></h4>
+        </div>
+        <div class="row" id="userDetailGroup">
+            <label for="userDetails" id="userDetailsLabel" class="control-label  col-md-2"></label>
+            <div id="userDetails" class="col-md-2 offset-md-2"></div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="addResource.html">Add Resource</a></li>
+            <li role="presentation"><a href="addIncident.html">Add Emergency Incident</a></li>
+            <li role="presentation" class="active"><a href="search.html">Search Resource</a></li>
+            <li role="presentation"><a href="resourceStatus.html">Resource Status</a></li>
+            <li role="presentation"><a href="report.html">Resource Report</a></li>
+            <li role="presentation"><a href="javascript:exit()">Exit</a></li>
+        </ul>
+    </div>
+
+    <div id="contentWrapper">
+        <div id="searchContainer">
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="keyword">Keyword:</label>
+                    <input class="form-control" id="keyword" name="keyword" placeholder="Keyword">
+                </div>
+                <div class="form-group">
+                    <label for="esfsSelect">Select ESF:</label>
+                    <select class="form-control" id="esfsSelect" name="esf"></select>
+                </div>
+                <div class="form-group" id="locationGroup">
+                    <label for="location">Location Within Miles</label>
+                    <input class="form-control" id="location" name="location"
+                           placeholder="Location in Miles">
+                </div>
+                <div class="form-group">
+                    <label for="incidentSelect">Select Incident:</label>
+                    <select class="form-control" id="incidentSelect" name="incident"></select>
+                </div>
+                <button class="btn btn-default" onclick="homePage()">Cancel</button>
+                <button type="submit" class="btn btn-default">Search</button>
+            </form>
+        </div>
+
+        <!-- container to display error message -->
+        <div id="divError">
+            <div class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <div class="errorMessage"></div>
+            </div>
+        </div>
+
+
+        <!-- will add-in div searchResults the when search results are sent from server -->
+        <div id="searchResults"></div>
+
+        <!-- popup for resource request - need to specify the return date-->
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" id="returnDateModal" role="dialog"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form id="resourceRequestForm">
+                            <h3>Request Resource</h3>
+                            <div class="form-group">
+                                <label for="resourceID" class="control-label">Resource ID:</label>
+                                <input READONLY type="text" class="form-control" id="resourceID" name="resourceID">
+                            </div>
+                            <div class="form-group">
+                                <label for="incidentID" class="control-label">Incident ID:</label>
+                                <input READONLY type="text" class="form-control" id="incidentID" name="incidentID">
+                            </div>
+                            <div class="form-group">
+                                <label for="datepicker1" class="control-label">Return Date:</label>
+                                <div class='input-group date datepicker' id='datepicker1' data-date-start-date="d">
+                                    <input type='text' class="form-control" name="returnDate" id="returnDate"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                     </span>
+                                </div>
+                            </div>
+                            <div class="form-group" id="resourceRequestStatus">
+                                <div class="alert alert-success">
+                                    <strong>Success!</strong> Resource Request has been sent.
+                                </div>
+                                <div class="alert alert-danger">
+                                    <strong>Fail!</strong> Was not able to request resource.
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="requestResourceSubmitBtn">Request Resource</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- repair form -->
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" id="repairModal" role="dialog"
+             aria-labelledby="mySmallModalLabel">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form id="repairForm">
+                            <h3>Repair Resource</h3>
+                            <div class="form-group">
+                                <label for="repairResourceID" class="control-label">Resource ID:</label>
+                                <input READONLY type="text" class="form-control" id="repairResourceID" name="repairResourceID">
+                            </div>
+                            <div class="form-group" id="requestInfo">
+                                <label for="requestResourceID" class="control-label">Request Resource ID:</label>
+                                <input READONLY type="text" class="form-control" id="requestResourceID" name="requestResourceID">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="duration" id="durationLabel" class="control-label">Repair duration for next days:</label>
+                                <input  type="text" class="form-control" id="duration" name="duration" >
+                            </div>
+                            <div class="form-group" id="repairRequestStatus">
+                                <div class="alert alert-success">
+                                    <strong>Success!</strong> Repair Request has been sent.
+                                </div>
+                                <div class="alert alert-danger">
+                                    <strong>Fail!</strong> Was not able to Repair resource.
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="repairSubmitBtn">Repair Resource</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ERMS: Team 70</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="js/libs/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+    <script type="text/javascript" src="js/libs/jquery/jquery-2.1.4.min.js"></script>
+    <script src="js/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/utils.js"></script>
+
+    <script type="text/javascript">
+
+        var user = $.parseJSON(sessionStorage.user); //using browser session storage to store user info
+        //actions that needs to be done after page loaded
+        $(document).ready(function () {
+
+            setUserInto(); // in /js/utils.js
+
+        })
+    </script>
+<body>
+
+<!-- menu -->
+<div id="content">
+    <div id="menuWrapper">
+
+        <div class="row">
+            <h4 id="userName" class="col-md-5"></h4><h4 id="userTypeName" class="col-md-5"></h4>
+        </div>
+        <div class="row" id="userDetailGroup">
+            <label for="userDetails" id="userDetailsLabel" class="control-label  col-md-2"></label>
+            <div  id="userDetails" class="col-md-2 offset-md-2"></div>
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li role="presentation"><a href="addResource.html">Add Resource</a></li>
+            <li role="presentation"><a href="addIncident.html">Add Emergency Incident</a></li>
+            <li role="presentation"><a href="search.html">Search Resource</a></li>
+            <li role="presentation"><a href="resourceStatus.html">Resource Status</a></li>
+            <li role="presentation"><a href="report.html">Resource Report</a></li>
+            <li role="presentation"><a href="javascript:exit()">Exit</a></li>
+        </ul>
+    </div>
+
+
+  <!--  <div class="container" id="userInfoForm">
+
+        <div class="row">
+            <label for="userName" class="control-label col-md-2">Name:</label>
+            <div name="userName" id="userName" class="col-md-2 offset-md-2"></div>
+        </div>
+        <div class="row">
+            <label for="userTypeName" class="control-label  col-md-2">Type:</label>
+            <div name="userTypeName" id="userTypeName" class="col-md-2 offset-md-2"></div>
+        </div>
+        <div class="row " id="userDetailGroup">
+            <label for="userDetails" id="userDetailsLabel" class="control-label  col-md-2"></label>
+            <div name="userDetails" id="userDetails" class="col-md-2 offset-md-2"></div>
+        </div>
+
+    </div>-->
+</div>
+</body>
+</html>

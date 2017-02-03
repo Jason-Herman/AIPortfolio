@@ -1,0 +1,19 @@
+SELECT ESF.UniqueNumber, ESF.Description, COUNT(Resource.ID) 
+FROM Resource INNER JOIN ON ESF.UniqueNumber=Resource.UniqueNumber
+WHERE Resource.Username=$Username
+GROUP BY ESF.UniqueNumber;
+
+
+SELECT COUNT(Resource.ID)
+FROM Resource
+WHERE Username=$Username AND Status='In Use';
+
+
+ $query = "SELECT ESF.UniqueNumber, ESF.Description, COUNT(Resource.ID) AS 'Total Resources',
+         (SELECT COUNT(Resource.ID)
+         FROM ESF NATURAL JOIN Resource
+         WHERE Resource.Username=$UserName AND Resource.Status='In Use') AS 'In Use'
+
+         FROM ESF NATURAL JOIN Resource
+         WHERE Resource.Username=$UserName
+         GROUP BY ESF.UniqueNumber;
