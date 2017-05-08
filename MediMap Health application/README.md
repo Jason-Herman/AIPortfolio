@@ -24,6 +24,4 @@ App Demo: https://youtu.be/jJ2o2mGwukI
 ##End the application
 * Use CTRL+C (CMD+C) in the Command Prompt\terminal window to stop the application server
   
-##Contact info
-* If you need help, you can contact
-  - Trevoris Jefferson - tjefferson7@gatech.edu - 7069743789
+
